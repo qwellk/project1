@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
-    class Outputfile
+    abstract class Outputfile
     {
+        public Outputfile()
+        {
+
+        }
+
+        public void Out()
+        {
+
+        }
     }
 }

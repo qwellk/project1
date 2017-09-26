@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Xuanji.cs" />
     <Compile Include="dealsudu.cs" />
     <Compile Include="makesudu.cs" />
     <Compile Include="Outputfile.cs" />

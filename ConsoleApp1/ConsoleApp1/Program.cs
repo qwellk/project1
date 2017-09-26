@@ -26,7 +26,8 @@ namespace Sudu1
                     if (File.Exists(args[2]))
                     {
                         Dealsudu ds = new Dealsudu(args[2]);
-                        
+                        ds.Deal();
+
                     }
                     else return;
                 }
@@ -35,6 +36,8 @@ namespace Sudu1
 
             else
             {
+                Console.WriteLine("else");
+                
                 return;
             }
 
