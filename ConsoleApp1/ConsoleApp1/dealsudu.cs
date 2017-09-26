@@ -6,19 +6,21 @@ using System.Threading.Tasks;
 using System.IO;
 using ConsoleApp1;
 
-namespace Sudu1
+namespace ConsoleApp1
 {
     class Dealsudu
     {
         string filename;
         FileStream F;
         StreamReader R;
+        Outputfile OP;
 
-        public Dealsudu(string s)
+        public Dealsudu(string s,Outputfile OP)
         {
             filename = s; 
             F = new FileStream(filename,FileMode.Open);
             R = new StreamReader(F);
+            this.OP = OP;
         }
 
         public void Deal()
@@ -56,25 +58,18 @@ namespace Sudu1
                 }
                 //进行解
                 Solve(juzhen, kexuan);
-                int sss=0;
+                string sss = "666";
                 for (int i = 0; i < 9; i++)
                 {
                     for (int j = 0; j < 9; j++)
                     {
                         Console.Write(juzhen[i, j]);
-                        sss = sss * 10 + juzhen[i, j];
+                        OP.Out("aaaaaaaaaaa");
                     }
                 }
-                string ssss = sss.ToString();
-                Console.Read();
-                FileStream fs = new FileStream("sudoku.txt", FileMode.Create);
-                StreamWriter sw = new StreamWriter(fs);
-                sw.Write(ssss);
-                //清空缓冲区
-                sw.Flush();
-                //关闭流
-                sw.Close();
-                fs.Close();
+                OP.Out("bbbbbbbbb");
+
+                // Console.Read();
             }
         }
 

@@ -43,8 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Xuanji.cs" />
-    <Compile Include="dealsudu.cs" />
-    <Compile Include="makesudu.cs" />
+    <Compile Include="Dealsudu.cs" />
+    <Compile Include="Makesudu.cs" />
     <Compile Include="Outputfile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

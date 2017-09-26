@@ -1,21 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
-    abstract class Outputfile
+    class Outputfile
     {
+        //FileStream fs;
+        StreamWriter sw;
+        
+
         public Outputfile()
         {
-
+            //fs = new FileStream("D:/repository/SE/sudoku.txt", FileMode.Open);
+            sw = new StreamWriter("D:/repository/SE/sudoku.txt",true);
         }
 
-        public void Out()
+        public void Out(string c)
         {
-
+                sw.WriteLine(c);
         }
     }
 }
+

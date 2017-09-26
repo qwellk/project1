@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,12 +7,14 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Sudu1
+namespace ConsoleApp1
 {
     class Program
     {
+        
         static void Main(string[] args)
         {
+            Outputfile OP = new Outputfile();
             if (args.Length == 3)
             {
                 //makesudu
@@ -25,7 +28,7 @@ namespace Sudu1
                 {
                     if (File.Exists(args[2]))
                     {
-                        Dealsudu ds = new Dealsudu(args[2]);
+                        Dealsudu ds = new Dealsudu(args[2],OP);
                         ds.Deal();
 
                     }
