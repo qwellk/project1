@@ -21,7 +21,14 @@ namespace ConsoleApp1
 
         public void Out(string c)
         {
-                sw.WriteLine(c);
+            //if(sw.) sw = new StreamWriter("D:/repository/SE/sudoku.txt", true);
+            sw.WriteLine(c);
+        }
+
+        public void Close()
+        {
+            sw.Flush();
+            sw.Close();
         }
     }
 }

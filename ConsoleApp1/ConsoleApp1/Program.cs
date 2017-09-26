@@ -18,9 +18,10 @@ namespace ConsoleApp1
             if (args.Length == 3)
             {
                 //makesudu
-                if (args[1] == "-c" & Regex.IsMatch(args[2], @"^[+-]?/d*$"))
+                if (args[1] == "-c" )
                 {
-
+                    Makesudu ms = new Makesudu(int.Parse(args[2]),OP);
+                    ms.Make();
                 }
 
                 //dealsudu

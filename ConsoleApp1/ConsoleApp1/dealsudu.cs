@@ -58,19 +58,21 @@ namespace ConsoleApp1
                 }
                 //进行解
                 Solve(juzhen, kexuan);
-                string sss = "666";
+                string sss = "";
                 for (int i = 0; i < 9; i++)
                 {
                     for (int j = 0; j < 9; j++)
                     {
-                        Console.Write(juzhen[i, j]);
-                        OP.Out("aaaaaaaaaaa");
+                        //Console.Write(juzhen[i, j]);
+                        sss += juzhen[i,j];
                     }
                 }
-                OP.Out("bbbbbbbbb");
-
-                // Console.Read();
+                OP.Out(sss);
+                OP.Out("\n");
+                
+                //Console.Read();
             }
+            OP.Close();
         }
 
         private void Solve(int[,] sudu,Xuanji[,] kexuan)
