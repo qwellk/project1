@@ -15,21 +15,21 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             Outputfile OP = new Outputfile();
-            if (args.Length == 3)
+            if (args.Length == 2)
             {
                 //makesudu
-                if (args[1] == "-c" )
+                if (args[0] == "-c" )
                 {
-                    Makesudu ms = new Makesudu(int.Parse(args[2]),OP);
+                    Makesudu ms = new Makesudu(int.Parse(args[1]),OP);
                     ms.Make();
                 }
 
                 //dealsudu
-                else if (args[1] == "-s")
+                else if (args[0] == "-s")
                 {
                     if (File.Exists(args[2]))
                     {
-                        Dealsudu ds = new Dealsudu(args[2],OP);
+                        Dealsudu ds = new Dealsudu(args[1],OP);
                         ds.Deal();
 
                     }
