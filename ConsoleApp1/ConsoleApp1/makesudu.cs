@@ -20,9 +20,10 @@ namespace ConsoleApp1
 
         public void Make()
         {
-            for(int f=0;f<t ;f++)
+            int tt = t / 4096;//还可以有更多的
+            for(int f=0;f<tt+1 ;f++)
             {
-                int y = S + f;
+                int y = S + Zaoshu(f);
                 string ss = y.ToString();
 
                 char[] chars = ss.ToCharArray();
@@ -59,18 +60,9 @@ namespace ConsoleApp1
                 }
                 //进行解
                 Solve(juzhen, kexuan);
-                string sss = "";
-                for (int i = 0; i < 9; i++)
-                {
-                    for (int j = 0; j < 9; j++)
-                    {
-                        //Console.Write(juzhen[i, j]);
-                        sss += juzhen[i, j];
-                    }
-                }
-                OP.Out(sss);
-                OP.Out("\n");
-
+                //print
+                //Printjuzhen(juzhen);
+                Duoprint(t, tt, 4096, juzhen);
                 //Console.Read();
             }
             OP.Close();
@@ -295,6 +287,200 @@ namespace ConsoleApp1
             return true;
         }
 
+        private int Zaoshu(int x)
+        {
+            //不能有5，不能有重复数字
+            int y=0;
+            while (x>0)
+            {
+                y++;
+                if (!Chongfu(y)) x--;
+            }
+            return y;
+        }
+
+        private bool Chongfu(int x)
+        {
+            int a = x / 100;
+            int b = (x % 100) / 10;
+            int c = x / 10;
+            return (a == 5 | b == 5 | c == 5 | a == b | a == c | b == c | a==0 | b==0 |c==0);
+        }
+
+        private void Duoprint(int t,int tt,int b,int[,] juzhen)
+        {
+            int a = ((tt+1)*b)<t?b:t -tt*b;
+            for (int aa = 0; aa < a; aa++)
+            {
+                int[,] juzheno = Huanhang(juzhen,1,1,1,1);
+
+                int x = aa / 64;
+                int y = aa % 64;
+                int x1 = x / 32, x2 = (x % 32) / 16, x3 = (x % 16) / 4, x4 = x % 4;
+                int y1 = y / 32, y2 = (y % 32) / 16, y3 = (y % 16) / 4, y4 = y % 4;
+
+                //对于行操作
+                if (x1 == 1)
+                {
+                    juzheno = Huanhang(juzheno, 1, 2, 1, 1);
+                }
+                else
+                {
+                    juzheno = Huanhang(juzheno, 1, 1, 1, 1);
+                }
+
+                if (x2 == 1)
+                {
+                    juzheno = Huanhang(juzheno, 3, 6, 1, 1);
+                    juzheno = Huanhang(juzheno, 4, 7, 1, 1);
+                    juzheno = Huanhang(juzheno, 5, 8, 1, 1);
+                }
+                else
+                {
+                    juzheno = Huanhang(juzheno, 1, 1, 1, 1);
+                }
+
+                if (x3 == 1)
+                {
+                    juzheno = Huanhang(juzheno, 3, 4, 1, 1);
+                }
+                else if (x3 == 2)
+                {
+                    juzheno = Huanhang(juzheno, 3, 5, 1, 1);
+                }
+                else if(x3 == 3)
+                {
+                    juzheno = Huanhang(juzheno, 4, 5, 1, 1);
+                }
+                else
+                {
+                    juzheno = Huanhang(juzheno, 3, 3, 1, 1);
+                }
+
+                if (x4 == 1)
+                {
+                    juzheno = Huanhang(juzheno, 6, 7, 1, 1);
+                }
+                else if (x4 == 2)
+                {
+                    juzheno = Huanhang(juzheno, 6, 8, 1, 1);
+                }
+                else if (x4 == 3)
+                {
+                    juzheno = Huanhang(juzheno, 7, 8, 1, 1);
+                }
+                else
+                {
+                    juzheno = Huanhang(juzheno, 6, 6, 1, 1);
+                }
+                //对于列操作
+                if (y1 == 1)
+                {
+                    juzheno = Huanhang(juzheno, 1, 1, 1, 2);
+                }
+                else
+                {
+                    juzheno = Huanhang(juzheno, 1, 1, 1, 1);
+                }
+
+                if (y2 == 1)
+                {
+                    juzheno = Huanhang(juzheno, 1, 1, 3, 6);
+                    juzheno = Huanhang(juzheno, 1, 1, 4, 7);
+                    juzheno = Huanhang(juzheno, 1, 1, 5, 8);
+                }
+                else
+                {
+                    juzheno = Huanhang(juzheno, 1, 1, 1, 1);
+                }
+
+                if (y3 == 1)
+                {
+                    juzheno = Huanhang(juzheno, 1, 1, 3, 4);
+                }
+                else if (y3 == 2)
+                {
+                    juzheno = Huanhang(juzheno, 1, 1, 3, 5);
+                }
+                else if (y3 == 3)
+                {
+                    juzheno = Huanhang(juzheno, 1, 1, 4, 5);
+                }
+                else
+                {
+                    juzheno = Huanhang(juzheno, 1, 1, 3, 3);
+                }
+
+                if (y4 == 1)
+                {
+                    juzheno = Huanhang(juzheno, 1, 1, 6, 7);
+                }
+                else if (y4 == 2)
+                {
+                    juzheno = Huanhang(juzheno, 1, 1, 6, 8);
+                }
+                else if (y4 == 3)
+                {
+                    juzheno = Huanhang(juzheno, 1, 1, 7, 8);
+                }
+                else
+                {
+                    juzheno = Huanhang(juzheno, 1, 1, 6, 6);
+                }
+                //print
+                Printjuzhen(juzheno);
+            }
+
+
+        }
+
+        private int[,] Huanhang(int[,] juzhen,int x1,int x2,int y1,int y2)
+        {
+            int[,] juzhen2 = new int[9, 9];
+            for (int i = 0;i < 9 ;i++)
+            {
+                for(int j=0;j<9 ;j++)
+                {
+                    juzhen2[i, j] = juzhen[i, j];
+                }
+            }
+            if (x1 != x2)
+            {
+                for(int i=0;i<9;i++)
+                {
+                    int temp = juzhen2[x1, i];
+                    juzhen2[x1, i] = juzhen2[x2, i];
+                    juzhen2[x2, i] = temp;
+                }
+            }
+            if (y1 != y2)
+            {
+                for (int i = 0; i < 9; i++)
+                {
+                    int temp = juzhen2[x1, i];
+                    juzhen2[i,y1] = juzhen2[i,y2];
+                    juzhen2[i,y2] = temp;
+                }
+            }
+            return juzhen2;
+        }
+
+        private void Printjuzhen(int[,] juzhen)
+        {
+            string sss = "";
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    //Console.Write(juzhen[i, j]);
+                    sss += juzhen[i, j];
+                }
+            }
+            OP.Out(sss);
+            OP.Out("\n");
+        }
 
     }
+
+
 }

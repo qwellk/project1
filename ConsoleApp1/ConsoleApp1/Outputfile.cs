@@ -16,7 +16,7 @@ namespace ConsoleApp1
         public Outputfile()
         {
             //fs = new FileStream("D:/repository/SE/sudoku.txt", FileMode.Open);
-            sw = new StreamWriter("D:/repository/SE/sudoku.txt",true);
+            sw = new StreamWriter("sudoku.txt",true);
         }
 
         public void Out(string c)
