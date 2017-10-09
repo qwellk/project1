@@ -14,6 +14,7 @@ namespace ConsoleApp1
         FileStream F;
         StreamReader R;
         Outputfile OP;
+        Boolean M = false;
 
         public Dealsudu(string s,Outputfile OP)
         {
@@ -28,6 +29,7 @@ namespace ConsoleApp1
             string line;
             while ((line = R.ReadLine()) != null)
             {
+                M = false;
                 char[] chars = line.ToCharArray();
                 int[,] juzhen=new int[9,9];//存入开始状态的数独
                 for(int i=0;i<81 ;i++)
@@ -65,10 +67,11 @@ namespace ConsoleApp1
                     {
                         //Console.Write(juzhen[i, j]);
                         sss += juzhen[i,j];
+                        //sss += " ";
                     }
                 }
                 OP.Out(sss);
-                OP.Out("\n");
+                //OP.Out("\n");
                 
                 //Console.Read();
             }
@@ -77,7 +80,8 @@ namespace ConsoleApp1
 
         private void Solve(int[,] sudu,Xuanji[,] kexuan)
         {
-            if (Tianman(sudu)) return;
+            if (M) return;
+            M = Tianman(sudu);
             Xuanji X = Findshortest(sudu, kexuan);
             int length = X.list.Count;
             int j;
@@ -85,13 +89,14 @@ namespace ConsoleApp1
             {
                 int i = X.list[0];//因为每次add都加到末端
                 sudu[X.x, X.y] = i;
+                //Console.WriteLine("in" + (X.x+1) + " " + (X.y+1)+" "+i);
                 List<Xuanji> change= Saichu(X.x, X.y, i, kexuan);
                 Solve(sudu, kexuan);
-                if (Tianman(sudu)) break;
+                if (M) break;
+                //Console.WriteLine("out" + (X.x+1) + " " + (X.y+1)+" "+i);
                 Jiahui(change,i);
-                
             }
-            if ((!Tianman(sudu))) sudu[X.x, X.y] = 0;
+            if (!M) sudu[X.x, X.y] = 0;
         }
 
         private List<Xuanji> Saichu(int x,int y,int s, Xuanji[,] L)//筛除可选数
@@ -112,142 +117,56 @@ namespace ConsoleApp1
                     gaidong.Add(L[i,y]);
                 }
             }
+            Addin9(x, y, gaidong, L, s);
+            return gaidong;
+        }
+
+        private void Addin9(int x,int y,List<Xuanji> gaidong,Xuanji[,] L,int s)
+        {
+            int i, imax;
+            int j, jmax;
             if (x < 3)
             {
-                if (y < 3)
-                {
-                    for(int i=0;i<3 ;i++)
-                    {
-                        for(int j=0;j<3; j++)
-                        {
-                            if (L[i, j].Contains(s))
-                            {
-                                L[i, j].Remove(s);
-                                gaidong.Add(L[i,j]);
-                            }
-                        }
-                    }
-                }
-                else if (y < 6)
-                {
-                    for (int i = 0; i < 3; i++)
-                    {
-                        for (int j = 3; j < 6; j++)
-                        {
-                            if (L[i, j].Contains(s))
-                            {
-                                L[i, j].Remove(s);
-                                gaidong.Add(L[i, j]);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < 3; i++)
-                    {
-                        for (int j = 6; j < 9; j++)
-                        {
-                            if (L[i, j].Contains(s))
-                            {
-                                L[i, j].Remove(s);
-                                gaidong.Add(L[i, j]);
-                            }
-                        }
-                    }
-                }
+                i = 0;
+                imax = 3;
             }
-            else if(x<6)
+            else if (x < 6)
             {
-                if (y < 3)
-                {
-                    for (int i = 3; i < 6; i++)
-                    {
-                        for (int j = 0; j < 3; j++)
-                        {
-                            if (L[i, j].Contains(s))
-                            {
-                                L[i, j].Remove(s);
-                                gaidong.Add(L[i, j]);
-                            }
-                        }
-                    }
-                }
-                else if (y < 6)
-                {
-                    for (int i = 3; i < 6; i++)
-                    {
-                        for (int j = 3; j < 6; j++)
-                        {
-                            if (L[i, j].Contains(s))
-                            {
-                                L[i, j].Remove(s);
-                                gaidong.Add(L[i, j]);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    for (int i = 3; i < 6; i++)
-                    {
-                        for (int j = 6; j < 9; j++)
-                        {
-                            if (L[i, j].Contains(s))
-                            {
-                                L[i, j].Remove(s);
-                                gaidong.Add(L[i, j]);
-                            }
-                        }
-                    }
-                }
+                i = 3;
+                imax = 6;
             }
             else
             {
-                if (y < 3)
+                i = 6;
+                imax = 9;
+            }
+
+            if (y < 3)
+            {
+                j = 0;
+                jmax = 3;
+            }
+            else if (y < 6)
+            {
+                j = 3;
+                jmax = 6;
+            }
+            else
+            {
+                j = 6;
+                jmax = 9;
+            }
+            for (int ii=i; ii < imax; ii++)
+            {
+                for (int jj=j; jj < jmax; jj++)
                 {
-                    for (int i = 6; i < 9; i++)
+                    if (L[ii, jj].Contains(s))
                     {
-                        for (int j = 0; j < 3; j++)
-                        {
-                            if (L[i, j].Contains(s))
-                            {
-                                L[i, j].Remove(s);
-                                gaidong.Add(L[i, j]);
-                            }
-                        }
-                    }
-                }
-                else if (y < 6)
-                {
-                    for (int i = 6; i < 9; i++)
-                    {
-                        for (int j = 3; j < 6; j++)
-                        {
-                            if (L[i, j].Contains(s))
-                            {
-                                L[i, j].Remove(s);
-                                gaidong.Add(L[i, j]);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    for (int i = 6; i < 9; i++)
-                    {
-                        for (int j = 6; j < 9; j++)
-                        {
-                            if (L[i, j].Contains(s))
-                            {
-                                L[i, j].Remove(s);
-                                gaidong.Add(L[i, j]);
-                            }
-                        }
+                        L[ii, jj].Remove(s);
+                        gaidong.Add(L[ii, jj]);
                     }
                 }
             }
-            return gaidong;
         }
 
         private Xuanji Findshortest(int[,] sudu,Xuanji[,] L)//找到可填入最少的点

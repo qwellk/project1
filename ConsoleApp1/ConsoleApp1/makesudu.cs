@@ -20,52 +20,127 @@ namespace ConsoleApp1
 
         public void Make()
         {
-            int tt = t / 4096;//还可以有更多的
-            for(int f=0;f<tt+1 ;f++)
-            {
-                int y = S + Zaoshu(f);
-                string ss = y.ToString();
+            
+            int y = S;
+            string ss = y.ToString();
 
-                char[] chars = ss.ToCharArray();
-                int[,] juzhen = new int[9, 9];//存入开始状态的数独
-                for (int i = 0; i < 9; i++)
+            char[] chars = ss.ToCharArray();
+            int[,] juzhen = new int[9, 9];//存入开始状态的数独
+            for (int i = 0; i < 9; i++)
+            {
+                juzhen[i / 9, i % 9] = (int)chars[i] - 48;
+            }
+            for (int i = 9; i < 81; i++)
+            {
+                juzhen[i / 9, i % 9] = 0;
+            }
+            //juzhen is already
+            Xuanji[,] kexuan = new Xuanji[9, 9];//存入可选数
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
                 {
-                    juzhen[i / 9, i % 9] = (int)chars[i] - 48;
-                }
-                for (int i = 9; i < 81; i++)
-                {
-                    juzhen[i / 9, i % 9] = 0;
-                }
-                //juzhen is already
-                Xuanji[,] kexuan = new Xuanji[9, 9];//存入可选数
-                for (int i = 0; i < 9; i++)
-                {
-                    for (int j = 0; j < 9; j++)
+                    kexuan[i, j] = new Xuanji();
+                    for (int k = 1; k < 10; k++)
                     {
-                        kexuan[i, j] = new Xuanji();
-                        for (int k = 1; k < 10; k++)
+                        kexuan[i, j].Set(i, j);
+                        kexuan[i, j].Add(k);
+                    }
+                }
+            }
+            //可选数初始化
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if (juzhen[i, j] != 0) Saichu(i, j, juzhen[i, j], kexuan);
+                }
+            }
+            //进行解
+            Solve(juzhen, kexuan);
+            //print
+            //Printjuzhen(juzhen);
+            int tt = 0;
+            //Duoprint(t, tt, 4096, juzhen);
+            //Console.Read();
+            List<int> l = new List<int>();
+            l.Add(1);
+            l.Add(2);
+            l.Add(3);
+            l.Add(4);
+            //l.Add(5);
+            l.Add(6);
+            l.Add(7);
+            l.Add(8);
+            l.Add(9);
+            for (int a=0;a<8;a++)
+            {
+                List<int> la= new List<int>(l.ToArray());
+                List<int> l1 = new List<int>();
+                l1.Add(la[a]);
+                la.Remove(la[a]);
+                for (int b = 0; b < 7; b++)
+                {
+                    List<int> lb = new List<int>(la.ToArray());
+                    List<int> l2 = new List<int>(l1.ToArray());
+                    l2.Add(lb[b]);
+                    lb.Remove(lb[b]);
+                    for (int c = 0; c < 6; c++)
+                    {
+                        List<int> lc = new List<int>(lb.ToArray());
+                        List<int> l3 = new List<int>(l2.ToArray());
+                        l3.Add(lc[c]);
+                        lc.Remove(lc[c]);
+                        for (int d = 0; d < 5; d++)
                         {
-                            kexuan[i, j].Set(i, j);
-                            kexuan[i, j].Add(k);
+                            List<int> ld = new List<int>(lc.ToArray());
+                            List<int> l4 = new List<int>(l3.ToArray());
+                            l4.Add(lb[b]);
+                            ld.Remove(ld[d]);
+                            for (int e = 0; e < 4; e++)
+                            {
+                                List<int> le = new List<int>(ld.ToArray());
+                                List<int> l5 = new List<int>(l4.ToArray());
+                                l5.Add(le[e]);
+                                le.Remove(le[e]);
+                                for (int f = 0; f < 3; f++)
+                                {
+                                    List<int> lf = new List<int>(le.ToArray());
+                                    List<int> l6 = new List<int>(l5.ToArray());
+                                    l6.Add(lf[f]);
+                                    lf.Remove(lf[f]);
+                                    for (int g = 0; g < 2; g++)
+                                    {
+                                        List<int> lg = new List<int>(lf.ToArray());
+                                        List<int> l7 = new List<int>(l6.ToArray());
+                                        l7.Add(lg[g]);
+                                        lg.Remove(lg[g]);
+                                        for (int h = 0; h < 1; h++)
+                                        {
+                                            List<int> lh = new List<int>(lg.ToArray());
+                                            List<int> l8 = new List<int>(l7.ToArray());
+                                            l8.Add(lh[h]);//l8为产生的8个数的排列
+                                            lh.Remove(lh[h]);
+
+                                            //交换矩阵中的数
+                                            int[,] newjuzhen = Jiaohuan(l8,juzhen);
+                                            Duoprint(t,tt, 4096, newjuzhen);
+                                            tt++;
+                                            if (tt * 4096 > t)
+                                            {
+                                                OP.Close();
+                                                return;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
-                //可选数初始化
-                for (int i = 0; i < 9; i++)
-                {
-                    for (int j = 0; j < 9; j++)
-                    {
-                        if (juzhen[i, j] != 0) Saichu(i, j, juzhen[i, j], kexuan);
-                    }
-                }
-                //进行解
-                Solve(juzhen, kexuan);
-                //print
-                //Printjuzhen(juzhen);
-                Duoprint(t, tt, 4096, juzhen);
-                //Console.Read();
             }
-            OP.Close();
+
+            //OP.Close();
         
         }
 
@@ -106,142 +181,56 @@ namespace ConsoleApp1
                     gaidong.Add(L[i, y]);
                 }
             }
+            Addin9(x, y, gaidong, L, s);
+            return gaidong;
+        }
+
+        private void Addin9(int x, int y, List<Xuanji> gaidong, Xuanji[,] L, int s)
+        {
+            int i, imax;
+            int j, jmax;
             if (x < 3)
             {
-                if (y < 3)
-                {
-                    for (int i = 0; i < 3; i++)
-                    {
-                        for (int j = 0; j < 3; j++)
-                        {
-                            if (L[i, j].Contains(s))
-                            {
-                                L[i, j].Remove(s);
-                                gaidong.Add(L[i, j]);
-                            }
-                        }
-                    }
-                }
-                else if (y < 6)
-                {
-                    for (int i = 0; i < 3; i++)
-                    {
-                        for (int j = 3; j < 6; j++)
-                        {
-                            if (L[i, j].Contains(s))
-                            {
-                                L[i, j].Remove(s);
-                                gaidong.Add(L[i, j]);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < 3; i++)
-                    {
-                        for (int j = 6; j < 9; j++)
-                        {
-                            if (L[i, j].Contains(s))
-                            {
-                                L[i, j].Remove(s);
-                                gaidong.Add(L[i, j]);
-                            }
-                        }
-                    }
-                }
+                i = 0;
+                imax = 3;
             }
             else if (x < 6)
             {
-                if (y < 3)
-                {
-                    for (int i = 3; i < 6; i++)
-                    {
-                        for (int j = 0; j < 3; j++)
-                        {
-                            if (L[i, j].Contains(s))
-                            {
-                                L[i, j].Remove(s);
-                                gaidong.Add(L[i, j]);
-                            }
-                        }
-                    }
-                }
-                else if (y < 6)
-                {
-                    for (int i = 3; i < 6; i++)
-                    {
-                        for (int j = 3; j < 6; j++)
-                        {
-                            if (L[i, j].Contains(s))
-                            {
-                                L[i, j].Remove(s);
-                                gaidong.Add(L[i, j]);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    for (int i = 3; i < 6; i++)
-                    {
-                        for (int j = 6; j < 9; j++)
-                        {
-                            if (L[i, j].Contains(s))
-                            {
-                                L[i, j].Remove(s);
-                                gaidong.Add(L[i, j]);
-                            }
-                        }
-                    }
-                }
+                i = 3;
+                imax = 6;
             }
             else
             {
-                if (y < 3)
+                i = 6;
+                imax = 9;
+            }
+
+            if (y < 3)
+            {
+                j = 0;
+                jmax = 3;
+            }
+            else if (y < 6)
+            {
+                j = 3;
+                jmax = 6;
+            }
+            else
+            {
+                j = 6;
+                jmax = 9;
+            }
+            for (int ii = i; ii < imax; ii++)
+            {
+                for (int jj = j; jj < jmax; jj++)
                 {
-                    for (int i = 6; i < 9; i++)
+                    if (L[ii, jj].Contains(s))
                     {
-                        for (int j = 0; j < 3; j++)
-                        {
-                            if (L[i, j].Contains(s))
-                            {
-                                L[i, j].Remove(s);
-                                gaidong.Add(L[i, j]);
-                            }
-                        }
-                    }
-                }
-                else if (y < 6)
-                {
-                    for (int i = 6; i < 9; i++)
-                    {
-                        for (int j = 3; j < 6; j++)
-                        {
-                            if (L[i, j].Contains(s))
-                            {
-                                L[i, j].Remove(s);
-                                gaidong.Add(L[i, j]);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    for (int i = 6; i < 9; i++)
-                    {
-                        for (int j = 6; j < 9; j++)
-                        {
-                            if (L[i, j].Contains(s))
-                            {
-                                L[i, j].Remove(s);
-                                gaidong.Add(L[i, j]);
-                            }
-                        }
+                        L[ii, jj].Remove(s);
+                        gaidong.Add(L[ii, jj]);
                     }
                 }
             }
-            return gaidong;
         }
 
         private Xuanji Findshortest(int[,] sudu, Xuanji[,] L)//找到可填入最少的点
@@ -287,7 +276,7 @@ namespace ConsoleApp1
             return true;
         }
 
-        private int Zaoshu(int x)
+        /*private int Zaoshu(int x)
         {
             //不能有5，不能有重复数字
             int y=0;
@@ -297,14 +286,38 @@ namespace ConsoleApp1
                 if (!Chongfu(y)) x--;
             }
             return y;
-        }
+        }*/
 
-        private bool Chongfu(int x)
+        /*private bool Chongfu(int x)
         {
             int a = x / 100;
             int b = (x % 100) / 10;
             int c = x / 10;
             return (a == 5 | b == 5 | c == 5 | a == b | a == c | b == c | a==0 | b==0 |c==0);
+        }*/
+
+        private int[,] Jiaohuan(List<int> L,int[,] juzhen)
+        {
+            int[,] juzheno = new int[9, 9];
+            for(int i=0;i<9 ;i++)
+            {
+                for(int j=0;j<9 ;j++)
+                { 
+                    if(juzhen[i,j]==5)//5是一开始选定的
+                    {
+                        juzheno[i, j] = 5;
+                    }
+                    else if(juzhen[i,j]<5)
+                    {
+                        juzheno[i, j] = L[juzhen[i, j]-1];
+                    }
+                    else
+                    {
+                        juzheno[i, j] = L[juzhen[i, j] - 2];//因为L中只有8个数
+                    }
+                }
+            }
+            return juzheno;
         }
 
         private void Duoprint(int t,int tt,int b,int[,] juzhen)
@@ -430,7 +443,7 @@ namespace ConsoleApp1
                 //print
                 Printjuzhen(juzheno);
             }
-
+            
 
         }
 
@@ -474,10 +487,11 @@ namespace ConsoleApp1
                 {
                     //Console.Write(juzhen[i, j]);
                     sss += juzhen[i, j];
+                    //sss += " ";
                 }
             }
             OP.Out(sss);
-            OP.Out("\n");
+            //OP.Out("\n");
         }
 
     }

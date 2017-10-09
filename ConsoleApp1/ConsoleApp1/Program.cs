@@ -27,7 +27,7 @@ namespace ConsoleApp1
                 //dealsudu
                 else if (args[0] == "-s")
                 {
-                    if (File.Exists(args[2]))
+                    if (File.Exists(args[1]))
                     {
                         Dealsudu ds = new Dealsudu(args[1],OP);
                         ds.Deal();
