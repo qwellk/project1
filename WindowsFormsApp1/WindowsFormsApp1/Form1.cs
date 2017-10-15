@@ -227,7 +227,7 @@ namespace WindowsFormsApp1
             /*int[,] lists = new int[1,81];
             int[] list=new int[81];
             Console.WriteLine(this.difficulty);
-            generate(1, this.difficulty,ref lists[0,0]);
+            generate(1, this.difficulty,ref lists);
             for(int x=0;x<81; x++)
             {
                 list[x] = lists[0, x];
