@@ -92,7 +92,7 @@ namespace ConsoleApp1
                 //Console.WriteLine("in" + (X.x+1) + " " + (X.y+1)+" "+i);
                 List<Xuanji> change= Saichu(X.x, X.y, i, kexuan);
                 Solve(sudu, kexuan);
-                if (M) break;
+                if (M) return;
                 //Console.WriteLine("out" + (X.x+1) + " " + (X.y+1)+" "+i);
                 Jiahui(change,i);
             }
